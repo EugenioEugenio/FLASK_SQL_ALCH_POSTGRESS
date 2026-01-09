@@ -1,10 +1,79 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Список сотрудников</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .flash-success { color: green; }
+        .flash-danger { color: red; }
+    </style>
 </head>
 <body>
-$END$
+    <h1>Сотрудники</h1>
+
+    <!-- Вывод сообщений (Flash messages) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Форма поиска -->
+    <h3>Поиск сотрудников по всем полям</h3>
+    <form method="POST" action="/">
+        <input type="text" name="search" placeholder="Поиск по имени и id..." value="{{ search_query }}">
+        <input type="submit" value="Найти">
+        <a href="{{ url_for('index') }}">Сбросить поиск</a>
+    </form>
+
+    <!-- Форма добавления нового сотрудника -->
+    <h3>Добавить сотрудника</h3>
+    <form method="POST" action="/add">
+        <input type="text" name="id" placeholder="id" required>
+        <input type="text" name="name" placeholder="name" required>
+        <input type="text" name="role" placeholder="role" required>
+        <input type="text" name="salary" placeholder="salary" required>
+        <input type="text" name="employment_date" placeholder="employment_date" required>
+        <input type="text" name="manager_id" placeholder="manager_id" required>
+        <input type="submit" value="Добавить">
+    </form>
+
+    <!-- Таблица сотрудников -->
+    <table>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>role</th>
+            <th>salary</th>
+            <th>employment_date</th>
+            <th>manager_id</th>
+            <th>Действия</th>
+        </tr>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.id }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.role }}</td>
+            <td>{{ employee.salary }}</td>
+            <td>{{ employee.employment_date }}</td>
+            <td>{{ employee.manager_id }}</td>
+            <td>
+                <a href="{{ url_for('update', id=employee.id) }}">Редактировать</a>
+                <!-- Форма для удаления, так как DELETE/POST безопаснее, чем GET-ссылка -->
+                <form action="{{ url_for('delete', id=employee.id) }}" method="POST" style="display:inline;">
+                    <input type="submit" value="Удалить" onclick="return confirm('Вы уверены, что хотите удалить этого сотрудника?');">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
+

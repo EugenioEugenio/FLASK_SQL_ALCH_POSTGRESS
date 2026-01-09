@@ -1,10 +1,29 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Обновить сотрудника</title>
 </head>
 <body>
-$END$
+    <h1>Обновить данные сотрудника</h1>
+    <form method="POST">
+        <label for="id">id:</label>
+        <input type="text" id="id" name="id" value="{{ employee.id }}" required><br>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" value="{{ employee.name }}" required><br>
+        <label for="role">Должность:</label>
+        <input type="text" id="role" name="role" value="{{ employee.role }}" required><br>
+        <label for="salary">Оклад:</label>
+        <input type="text" id="salary" name="salary" value="{{ employee.salary }}" required><br>
+        <label for="employment_date">Дата_приёма:</label>
+        <input type="text" id="employment_date" name="employment_date" value="{{ employee.employment_date}}" required><br>
+        <label for="manager_id">Начальник:</label>
+        <input type="text" id="manager_id" name="manager_id" value="{{ employee.manager_id}}" required><br>
+
+        <input type="submit" value="Сохранить изменения">
+    </form>
+    <a href="{{ url_for('index') }}">Отмена</a>
 </body>
 </html>
